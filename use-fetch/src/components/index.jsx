@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export default function useFetch({ url, options = {} }) {
+export default function useFetch(url, options = {}) {
   const [data, setData] = useState(null);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(null);
@@ -10,12 +10,13 @@ export default function useFetch({ url, options = {} }) {
     try {
       const response = await fetch(url, { ...options });
       if (!response.ok) throw new Error(response.statusText);
+
       const result = await response.json();
       setData(result);
-      setPending(false);
       setError(null);
-    } catch (error) {
-      setError(`${error}. Something went wrong!`);
+      setPending(false);
+    } catch (e) {
+      setError(`${e}. Some Error Occurred`);
       setPending(false);
     }
   }
