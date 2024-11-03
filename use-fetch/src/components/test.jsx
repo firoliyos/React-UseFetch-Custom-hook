@@ -1,17 +1,21 @@
-import useFetch from "."
-
+import useFetch from ".";
 
 export default function UseFetchHookTest() {
+  const { data, error, pending } = useFetch(
+    "https://dummyjson.com/products",
+    {}
+  );
 
-    const { data, error, pending } = useFetch(
-        "https://dummyjson.com/products",
-        {} 
-    )
-
-    console.log(data, pending, error)
-    return (
-        <div>
-          <h1>Use Fetch Hook</h1>
-        </div>
-    )
+  return (
+    <div>
+      <h1>Use Fetch Hook</h1>
+      {pending ? <h2>Loading...</h2> : null}
+      {error ? <h2>{error}</h2> : null}
+      {data && data.products && data.products.length
+        ? data.products.map((productItem) => (
+            <p key={productItem.id}>{productItem.title}</p>
+          ))
+        : null}
+    </div>
+  );
 }
